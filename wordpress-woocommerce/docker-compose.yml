@@ -1,0 +1,47 @@
+services:
+  db:
+    image: mariadb:10.11
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: bantys_root_password
+      MYSQL_DATABASE: bantys_bag_wp
+      MYSQL_USER: bantys_wp
+      MYSQL_PASSWORD: bantys_wp_password
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./database/bantys_bag_woocommerce.sql:/docker-entrypoint-initdb.d/01-bantys-bag.sql:ro
+    ports:
+      - "3306:3306"
+
+  wordpress:
+    image: wordpress:6.7-php8.2-apache
+    depends_on:
+      - db
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: bantys_wp
+      WORDPRESS_DB_PASSWORD: bantys_wp_password
+      WORDPRESS_DB_NAME: bantys_bag_wp
+      WORDPRESS_TABLE_PREFIX: wp_
+    volumes:
+      - wp_data:/var/www/html
+      - ./wp-content/themes/bantys-bag-kutchi:/var/www/html/wp-content/themes/bantys-bag-kutchi
+      - ./wp-content/plugins/bantys-bag-kutchi-core:/var/www/html/wp-content/plugins/bantys-bag-kutchi-core
+
+  phpmyadmin:
+    image: phpmyadmin:5.2
+    depends_on:
+      - db
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: bantys_root_password
+
+volumes:
+  db_data:
+  wp_data:

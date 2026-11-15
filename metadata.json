@@ -1,0 +1,8 @@
+{
+  "name": "Remix Banty\u0027s Bag",
+  "description": "Authentic Kutchi handloom apparel, natural-dyed Ajrakh kurtas, Bhujodi Kala cotton weaves, Rabari mirror-work jackets, and Bandhani silks crafted in Kutch, Gujarat.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
